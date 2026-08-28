@@ -377,21 +377,40 @@ document.getElementById('nextArrow').addEventListener('click', function() {
 });
 
 // --- Gate logic: rolling 72-hour inactivity via localStorage ---
-function checkGate() {
+//
+// Rule 1: any real page load (a QR scan or a freshly opened/typed URL)
+// must show content immediately, with no gate check at all. This code
+// path runs on every script execution from scratch, so it's true
+// regardless of whether the browser happens to reuse an existing
+// tab/session for the new scan.
+//
+// Rule 2: the gate only fires when an already-open tab/window regains
+// visibility (visibilitychange) and 72+ hours have passed since the
+// stamp was last set. We deliberately do NOT use sessionStorage or any
+// "is this a fresh session" flag to implement rule 1 -- mobile browsers
+// frequently reuse the same tab/session across separate QR scans, so a
+// session-based freshness check can fail to reset on a genuine rescan
+// and gate someone who just scanned the code. Splitting "page load" from
+// "visibilitychange" avoids that failure mode entirely.
+
+function stampAndShowContent() {
+  localStorage.setItem(GATE_KEY, Date.now().toString());
+  showContent();
+}
+
+function checkGateOnVisibilityChange() {
   const ts = localStorage.getItem(GATE_KEY);
-  const now = Date.now();
   if (!ts) {
-    localStorage.setItem(GATE_KEY, now.toString());
-    showContent();
+    // No stamp (e.g. cleared externally) -- treat as fresh.
+    stampAndShowContent();
     return;
   }
-  const elapsed = now - parseInt(ts, 10);
+  const elapsed = Date.now() - parseInt(ts, 10);
   if (elapsed >= GATE_THRESHOLD_MS) {
     localStorage.removeItem(GATE_KEY);
     showGate();
   } else {
-    localStorage.setItem(GATE_KEY, now.toString());
-    showContent();
+    stampAndShowContent();
   }
 }
 
@@ -406,12 +425,12 @@ function showContent() {
 
 document.getElementById('resetBtn').addEventListener('click', function() {
   localStorage.removeItem(GATE_KEY);
-  checkGate();
+  stampAndShowContent();
 });
 
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') {
-    checkGate();
+    checkGateOnVisibilityChange();
   }
 });
 
@@ -422,7 +441,8 @@ window.addEventListener('resize', function() {
   autoSizePill(document.getElementById('categoryPill'));
 });
 
-checkGate();
+// Every real page load (QR scan or fresh/typed URL) shows content immediately.
+stampAndShowContent();
 </script>
 
 </body>
