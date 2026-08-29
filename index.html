@@ -108,7 +108,12 @@
     font-size:20px; color:#8A6D5C; margin-bottom:20px;
     font-family:'Caveat', cursive; font-weight:700;
   }
-  .nav-arrow { font-size:16px; cursor:pointer; user-select:none; padding: 4px 8px; }
+  .nav-arrow {
+    cursor:pointer; user-select:none;
+    display:inline-flex; align-items:center; justify-content:center;
+    padding: 4px 10px;
+  }
+  .nav-arrow svg { display:block; }
   .nav-arrow.disabled { opacity:0.25; cursor:default; }
   .nav-arrow:not(.disabled):active { opacity:0.5; }
   .url { font-size:11px; letter-spacing:1px; color:#A0522D; text-transform:uppercase; font-family:'Quicksand'; }
@@ -201,9 +206,9 @@
     <div class="divider"></div>
     <div class="footer">
       <div class="nav">
-        <span class="nav-arrow" id="prevArrow">&#9664;</span>
+        <span class="nav-arrow prev" id="prevArrow"><svg width="11" height="16" viewBox="0 0 11 16"><polygon points="11,0 0,8 11,16" fill="#8A6D5C"/></svg></span>
         <span id="navLabel">TODAY</span>
-        <span class="nav-arrow" id="nextArrow">&#9654;</span>
+        <span class="nav-arrow next" id="nextArrow"><svg width="11" height="16" viewBox="0 0 11 16"><polygon points="0,0 11,8 0,16" fill="#8A6D5C"/></svg></span>
       </div>
       <div class="url">www.yourdailyqr.com</div>
     </div>
