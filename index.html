@@ -104,18 +104,24 @@
   }
   .footer { text-align:center; flex-shrink:0; }
   .nav {
-    display:flex; align-items:center; justify-content:center; gap:14px;
+    display:flex; align-items:center; justify-content:space-between;
+    width:100%;
     font-size:20px; color:#8A6D5C; margin-bottom:20px;
     font-family:'Caveat', cursive; font-weight:700;
   }
   .nav-arrow {
     cursor:pointer; user-select:none;
-    display:inline-flex; align-items:center; justify-content:center;
-    padding: 4px 10px;
+    display:flex; align-items:center; justify-content:center;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(138,109,92,0.14);
+    border: 1.5px solid rgba(138,109,92,0.4);
+    flex-shrink:0;
+    transition: background 0.15s;
   }
   .nav-arrow svg { display:block; }
-  .nav-arrow.disabled { opacity:0.25; cursor:default; }
-  .nav-arrow:not(.disabled):active { opacity:0.5; }
+  .nav-arrow.disabled { opacity:0.3; cursor:default; }
+  .nav-arrow:not(.disabled):active { background: rgba(138,109,92,0.28); }
   .url { font-size:11px; letter-spacing:1px; color:#A0522D; text-transform:uppercase; font-family:'Quicksand'; }
 
   @media (max-height: 580px) {
@@ -149,9 +155,9 @@
     <div class="divider"></div>
     <div class="footer">
       <div class="nav">
-        <span class="nav-arrow prev" id="prevArrow"><svg width="11" height="16" viewBox="0 0 11 16"><polygon points="11,0 0,8 11,16" fill="#8A6D5C"/></svg></span>
+        <span class="nav-arrow prev" id="prevArrow"><svg width="14" height="20" viewBox="0 0 11 16"><polygon points="11,0 0,8 11,16" fill="#8A6D5C"/></svg></span>
         <span id="navLabel">TODAY</span>
-        <span class="nav-arrow next" id="nextArrow"><svg width="11" height="16" viewBox="0 0 11 16"><polygon points="0,0 11,8 0,16" fill="#8A6D5C"/></svg></span>
+        <span class="nav-arrow next" id="nextArrow"><svg width="14" height="20" viewBox="0 0 11 16"><polygon points="0,0 11,8 0,16" fill="#8A6D5C"/></svg></span>
       </div>
       <div class="url">www.yourdailyqr.com</div>
     </div>
